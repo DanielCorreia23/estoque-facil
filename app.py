@@ -37,7 +37,15 @@ def produtos():
         flash("Produto cadastrado com sucesso!")
         return redirect(url_for("produtos"))
 
-    return render_template("produtos.html")
+    
+    conexao = conectar()
+    lista_produtos = conexao.execute(
+        """SELECT id, nome, localizacao_prateleira, codigo
+           FROM produtos ORDER BY nome"""
+    ).fetchall()
+    conexao.close()
+
+    return render_template("produtos.html", produtos=lista_produtos)
 
 
 @app.route("/lotes", methods=["GET", "POST"])
