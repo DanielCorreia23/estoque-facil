@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Lotes - Estoque Fácil</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f6f9; color: #253244; }
+        main { max-width: 650px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; }
+        label { display: block; margin-top: 18px; font-weight: bold; }
+        input, select { box-sizing: border-box; width: 100%; padding: 12px; margin-top: 6px; }
+        button { background: #176b55; color: white; padding: 14px 24px; border: 0; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+        a { color: #176b55; }
+        :focus-visible { outline: 3px solid #c66a00; outline-offset: 3px; }
+    </style>
+</head>
+<body>
+<main>
+    
+<nav aria-label="Navegação principal">
+    <a href="/">Início</a> |
+    <a href="/produtos">Produtos</a> |
+    <a href="/lotes">Lotes</a> |
+    <a href="/validade">Validades</a>
+</nav>
+    <h1>Cadastrar lote</h1>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% for mensagem in mensagens %}
+            <p role="status">{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="produto_id">Produto</label>
+        <select id="produto_id" name="produto_id" required>
+            <option value="">Selecione um produto</option>
+            {% for produto in produtos %}
+                <option value="{{ produto[0] }}">{{ produto[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="data_validade">Data de validade</label>
+        <input type="date" id="data_validade" name="data_validade" required>
+
+        <label for="quantidade">Quantidade</label>
+        <input type="number" id="quantidade" name="quantidade" min="0">
+
+        <button type="submit">Salvar lote</button>
+    </form>
+</main>
+</body>
+</html>
