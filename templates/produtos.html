@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Produtos - Estoque Fácil</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f6f9; color: #253244; }
+        main { max-width: 650px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; }
+        label { display: block; margin-top: 18px; font-weight: bold; }
+        input { box-sizing: border-box; width: 100%; padding: 12px; margin-top: 6px; }
+        button { background: #176b55; color: white; padding: 14px 24px; border: 0; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+        a { color: #176b55; }
+        :focus-visible { outline: 3px solid #c66a00; outline-offset: 3px; }
+    </style>
+</head>
+<body>
+<main>
+    
+<nav aria-label="Navegação principal">
+    <a href="/">Início</a> |
+    <a href="/produtos">Produtos</a> |
+    <a href="/lotes">Lotes</a> |
+    <a href="/validade">Validades</a>
+</nav>
+    <h1>Cadastrar produto</h1>
+    <p>Preencha os dados para adicionar um produto ao estoque.</p>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% for mensagem in mensagens %}
+            <p role="status">{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="nome">Nome do produto</label>
+        <input id="nome" name="nome" required>
+
+        <label for="localizacao">Localização na prateleira</label>
+        <input id="localizacao" name="localizacao" required>
+
+        <label for="codigo">Código do produto (opcional)</label>
+        <input id="codigo" name="codigo">
+
+        <button type="submit">Salvar produto</button>
+    </form>
+
+<h2>Produtos cadastrados</h2>
+
+<table border="1" cellpadding="10" style="width:100%; border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th scope="col">Produto</th>
+            <th scope="col">Localização</th>
+            <th scope="col">Código</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ produto[1] }}</td>
+            <td>{{ produto[2] }}</td>
+            <td>{{ produto[3] or '-' }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="3">Nenhum produto cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</main>
+</body>
+</html>
