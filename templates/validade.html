@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Controle de Validades - Estoque Fácil</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f6f9; color: #253244; }
+        main { max-width: 950px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid #ccc; text-align: left; }
+        th { background: #176b55; color: white; }
+        .vencido { color: #a71919; font-weight: bold; }
+        .alerta { color: #915000; font-weight: bold; }
+        a { color: #176b55; }
+        :focus-visible { outline: 3px solid #c66a00; outline-offset: 3px; }
+
+        .alto-contraste {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .alto-contraste main {
+            background: #000000;
+            color: #ffffff;
+            border: 2px solid #ffff00;
+        }
+
+        .alto-contraste th {
+            background: #ffff00;
+            color: #000000;
+        }
+
+        .alto-contraste td {
+            border-color: #ffffff;
+        }
+
+        .alto-contraste a,
+        .alto-contraste .vencido,
+        .alto-contraste .alerta {
+            color: #ffff00;
+        }
+
+        #botao-contraste {
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            background: #176b55;
+            color: white;
+            border: 2px solid currentColor;
+            border-radius: 8px;
+        }
+
+        .alto-contraste #botao-contraste {
+            background: #ffff00;
+            color: #000000;
+        }
+
+        .vencido {
+            background-color: #ffe0e0;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        .alerta {
+            background-color: #fff0b3;
+            color: #754400;
+            font-weight: bold;
+        }
+
+        .alto-contraste .vencido,
+        .alto-contraste .alerta {
+            background-color: #000000;
+            color: #ffff00;
+        }
+    </style>
+</head>
+<body>
+<main>
+    
+<nav aria-label="Navegação principal">
+    <a href="/">Início</a> |
+    <a href="/produtos">Produtos</a> |
+    <a href="/lotes">Lotes</a> |
+    <a href="/validade">Validades</a>
+</nav>
+    <h1>Controle de validades</h1>
+
+<button id="botao-contraste"
+        type="button"
+        aria-pressed="false"
+        onclick="alternarContraste()">
+    Ativar alto contraste
+</button>
+
+    <p>Consulte os produtos vencidos e próximos do vencimento.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Produto</th>
+                <th scope="col">Localização</th>
+                <th scope="col">Validade</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                <td>{{ registro[0] }}</td>
+                <td>{{ registro[1] }}</td>
+                <td>{{ registro[2] }}</td>
+                <td>{{ registro[3] if registro[3] is not none else '-' }}</td>
+                <td class="{% if registro[4] == 'VENCIDO' %}vencido{% elif registro[4] == 'VENCE EM ATÉ 30 DIAS' %}alerta{% endif %}">
+                    {{ registro[4] }}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Nenhum lote cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+
+<script>
+    function alternarContraste() {
+        const ativo = document.body.classList.toggle("alto-contraste");
+        const botao = document.getElementById("botao-contraste");
+
+        botao.setAttribute("aria-pressed", String(ativo));
+        botao.textContent = ativo
+            ? "Desativar alto contraste"
+            : "Ativar alto contraste";
+    }
+</script>
+</body>
+</html>
